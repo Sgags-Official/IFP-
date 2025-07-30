@@ -1,10 +1,15 @@
 import cv2
 import math
 import cvzone
+import torch
 from ultralytics import YOLO
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(f"Using device: {device}")
+
 # Load YOLO model
-yolo_model = YOLO("Weights/best.pt")
+model = YOLO("Weights/best.pt")
+model.to(device)
 
 # Class names
 class_labels = ['Pothole']
@@ -14,7 +19,7 @@ image_path = "Media/pothole_7.jpg"
 img = cv2.imread(image_path)
 
 # Predict
-results = yolo_model(img)
+results = model(img)
 
 # Draw results
 for r in results:
